@@ -16,48 +16,48 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+
+
 class ContactViewModel(
     private val repository: ContactRepository
-) : ViewModel(){
-
+) : ViewModel() {
 
     private val _state = MutableStateFlow(ContactState())
 
     private val _sortType = MutableStateFlow(SortType.FIRST_NAME)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val _contacts =_sortType.flatMapConcat { sortType ->
-       when(sortType) {
-           SortType.FIRST_NAME -> repository.getContactByFirstName()
-           SortType.LAST_NAME -> repository.getContactByLastName()
-           SortType.PHONE_NUMBER -> repository.getContactByPhoneNumber()
-       }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    private val _contacts = _sortType.flatMapConcat { sortType ->
+        when (sortType) {
+            SortType.FIRST_NAME -> repository.getContactByFirstName()
+            SortType.LAST_NAME -> repository.getContactByLastName()
+            SortType.PHONE_NUMBER -> repository.getContactByPhoneNumber()
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     }
 
-    val state = combine(_state,_contacts,_sortType){state,contact,sortType->
+    val state = combine(_state, _contacts, _sortType) { state, contacts, sortType ->
         state.copy(
-            contacts = contact,
+            contacts = contacts,
             sortType = sortType
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ContactState()).asLiveData(viewModelScope.coroutineContext)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ContactState())
 
-    fun onEvent(event : ContactEvent){
-        when(event){
+    fun onEvent(event: ContactEvent) {
+        when (event) {
             is ContactEvent.SortContacts -> {
-                _sortType.value =event.sortType
+                _sortType.value = event.sortType
             }
-            is ContactEvent.deleteContact ->{
+            is ContactEvent.DeleteContact -> {
                 viewModelScope.launch {
                     repository.deleteContact(event.contact)
                 }
             }
-            ContactEvent.saveContact ->{
+            ContactEvent.SaveContact -> {
                 val firstName = _state.value.firstName
                 val lastName = _state.value.lastName
                 val phoneNumber = _state.value.phoneNumber
 
-                if(firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty())
-                    return
+                if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) return
 
                 val contact = Contact(
                     firstName = firstName,
@@ -69,28 +69,27 @@ class ContactViewModel(
                     repository.upsertContact(contact)
                 }
             }
-            is ContactEvent.saveFirstName ->{
+            is ContactEvent.SaveFirstName -> {
                 _state.update {
                     it.copy(
-                        firstName =event.firstName
+                        firstName = event.firstName
                     )
                 }
             }
-            is ContactEvent.saveLastName -> {
+            is ContactEvent.SaveLastName -> {
                 _state.update {
                     it.copy(
-                        lastName =event.lastName
+                        lastName = event.lastName
                     )
                 }
             }
-            is ContactEvent.savePhoneNumber -> {
+            is ContactEvent.SavePhoneNumber -> {
                 _state.update {
                     it.copy(
-                        phoneNumber =event.phoneNumeber
+                        phoneNumber = event.phoneNumber
                     )
                 }
             }
         }
     }
-
 }

@@ -3,11 +3,11 @@ package com.example.contactapp.StateAndEvent
 import com.example.contactapp.DataBase.Contact
 
 sealed interface ContactEvent {
-    object saveContact : ContactEvent
-    data class deleteContact(val contact: Contact) : ContactEvent
-    data class saveFirstName(val firstName: String) : ContactEvent
-    data class saveLastName(val lastName: String) : ContactEvent
-    data class  savePhoneNumber(val phoneNumeber : String) : ContactEvent
+    object SaveContact : ContactEvent
+    data class DeleteContact(val contact: Contact) : ContactEvent
+    data class SaveFirstName(val firstName: String) : ContactEvent
+    data class SaveLastName(val lastName: String) : ContactEvent
+    data class SavePhoneNumber(val phoneNumber : String) : ContactEvent
 //    object showDialog : ContactEvent
 //    object hideDialog : ContactEvent
     data class SortContacts(val sortType : SortType):ContactEvent

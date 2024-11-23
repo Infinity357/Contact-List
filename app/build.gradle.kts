@@ -75,4 +75,5 @@ dependencies {
 
     //liveData
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+    implementation(kotlin("script-runtime"))
 }

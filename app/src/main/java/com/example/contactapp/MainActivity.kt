@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             ContactAppTheme {
                 HomeScreenTest(
                     state = viewModel.state,
-                    onEvent = {viewModel::onEvent}
+                    onEvent = {viewModel.onEvent(it)}
                 )
             }
         }

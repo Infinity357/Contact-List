@@ -15,66 +15,62 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
+import com.example.contactapp.DataBase.Contact
 import com.example.contactapp.StateAndEvent.ContactEvent
 import com.example.contactapp.StateAndEvent.ContactState
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomeScreenTest(
-    state: LiveData<ContactState>,
-    onEvent:(ContactEvent) -> Unit
-){
+    state: StateFlow<ContactState>,
+    onEvent: (ContactEvent) -> Unit
+) {
+    val contactState = state.collectAsState().value
+
     Column(
         modifier = Modifier.fillMaxSize().padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        TextField(
+            value = contactState.firstName,
+            onValueChange = { onEvent(ContactEvent.SaveFirstName(it)) },
+            placeholder = { Text(text = "First Name") }
+        )
 
-        state.value?.let {state->
-            TextField(
-                value = state.firstName,
-                onValueChange = {onEvent(ContactEvent.saveFirstName(it))},
-                placeholder = { Text(text = "First Name") }
-            )
-        }
+        TextField(
+            value = contactState.lastName,
+            onValueChange = { onEvent(ContactEvent.SaveLastName(it)) },
+            placeholder = { Text(text = "Last Name") }
+        )
 
-        state.value?.let {state->
-            TextField(
-                value = state.lastName,
-                onValueChange = {onEvent(ContactEvent.saveLastName(it))},
-                placeholder = { Text(text = "Last Name") }
-            )
-        }
-
-        state.value?.let {state->
-            TextField(
-                value = state.phoneNumber,
-                onValueChange = {onEvent(ContactEvent.savePhoneNumber(it))},
-                placeholder = { Text(text = "Phone Number") }
-            )
-        }
+        TextField(
+            value = contactState.phoneNumber,
+            onValueChange = { onEvent(ContactEvent.SavePhoneNumber(it)) },
+            placeholder = { Text(text = "Phone Number") }
+        )
 
         Button(
-            onClick = {onEvent(ContactEvent.saveContact)}
+            onClick = { onEvent(ContactEvent.SaveContact) },
+            enabled = contactState.firstName.isNotEmpty() && contactState.lastName.isNotEmpty() && contactState.phoneNumber.isNotEmpty()
         ) {
             Text(text = "Save")
         }
 
         LazyColumn {
-            state.value?.let {
-                items(it.contacts){ contact->
-                    Column(
-                        modifier = Modifier.fillMaxWidth().clickable { onEvent(ContactEvent.deleteContact(contact)) }
-                    ) {
-                        Text(text = "Name : ${it.firstName} ${it.lastName}")
-                        Spacer(Modifier.height(6.dp))
-                        Text(text = "PhoneNumber : ${it.phoneNumber}")
-                        HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(6.dp   ))
-                    }
+            items(contactState.contacts) { contact ->
+                Column(
+                    modifier = Modifier.fillMaxWidth().clickable { onEvent(ContactEvent.DeleteContact(contact)) }
+                ) {
+                    Text(text = "Name: ${contact.firstName} ${contact.lastName}")
+                    Spacer(Modifier.height(6.dp))
+                    Text(text = "PhoneNumber: ${contact.phoneNumber}")
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth().padding(6.dp))
                 }
             }
         }
-
     }
 }
