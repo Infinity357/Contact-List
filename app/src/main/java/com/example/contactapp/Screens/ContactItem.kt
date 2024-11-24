@@ -60,7 +60,7 @@ fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->U
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = TextStyle(
-                        fontFamily = FontFamily.SansSerif, fontSize = 18.sp, color = Color.Black
+                        fontFamily = FontFamily.SansSerif, fontSize = 18.sp
                     )
                 )
                 Text(
@@ -68,7 +68,7 @@ fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->U
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = TextStyle(
-                        fontFamily = FontFamily.SansSerif, fontSize = 14.sp, color = Color.Gray
+                        fontFamily = FontFamily.SansSerif, fontSize = 14.sp
                     )
                 )
             }

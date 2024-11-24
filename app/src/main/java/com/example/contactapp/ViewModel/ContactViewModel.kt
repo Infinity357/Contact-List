@@ -57,7 +57,7 @@ class ContactViewModel(
                 val lastName = _state.value.lastName
                 val phoneNumber = _state.value.phoneNumber
 
-                if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) return
+                if (firstName.isEmpty() || phoneNumber.isEmpty()) return
 
                 val contact = Contact(
                     firstName = firstName,
