@@ -11,4 +11,8 @@ sealed interface ContactEvent {
 //    object showDialog : ContactEvent
 //    object hideDialog : ContactEvent
     data class SortContacts(val sortType : SortType):ContactEvent
+    object nowAdding : ContactEvent
+    object doneAdding : ContactEvent
+    data class onSearchQueryChange(val newQuery : String) : ContactEvent
+    data class isSearching(val isSearch : Boolean) : ContactEvent
 }

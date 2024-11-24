@@ -90,6 +90,40 @@ class ContactViewModel(
                     )
                 }
             }
+            ContactEvent.doneAdding -> {
+                _state.update {
+                    it.copy(
+                        isAddingContact = false,
+                        firstName = "",
+                        lastName = "",
+                        phoneNumber = ""
+                    )
+                }
+            }
+            ContactEvent.nowAdding -> {
+                _state.update {
+                    it.copy(
+                        isAddingContact = true
+                    )
+                }
+            }
+
+            is ContactEvent.onSearchQueryChange -> {
+                _state.update {
+                    it.copy(
+                        searchQuery = event.newQuery
+                    )
+                }
+            }
+
+            is ContactEvent.isSearching -> {
+                _state.update {
+                    it.copy(
+                        isSearchActive = event.isSearch
+                    )
+                }
+            }
+
         }
     }
 }

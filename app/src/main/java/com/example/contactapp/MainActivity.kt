@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.contactapp.DataBase.ContactDataBase
+import com.example.contactapp.Screens.HomeScreen
 import com.example.contactapp.Screens.HomeScreenTest
 import com.example.contactapp.ViewModel.ContactRepository
 import com.example.contactapp.ViewModel.ContactViewModel
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ContactAppTheme {
-                HomeScreenTest(
+                HomeScreen(
                     state = viewModel.state,
                     onEvent = {viewModel.onEvent(it)}
                 )
