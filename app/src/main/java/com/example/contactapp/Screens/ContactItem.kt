@@ -32,7 +32,7 @@ import com.example.contactapp.R
 import com.example.contactapp.StateAndEvent.ContactEvent
 
 @Composable
-fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->Unit) {
+fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->Unit ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -41,6 +41,8 @@ fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->U
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        val a : Int = R.drawable.letter_a;
+
         Row (
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -48,7 +50,7 @@ fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->U
                 modifier = Modifier
                     .clip(shape = CircleShape)
                     .size(56.dp),
-                painter = painterResource(id = R.drawable.three),
+                painter = painterResource(id = a),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.contactapp.DataBase.Contact
+import com.example.contactapp.R
 import com.example.contactapp.StateAndEvent.ContactEvent
 import com.example.contactapp.StateAndEvent.ContactState
 import com.example.contactapp.StateAndEvent.SortType
@@ -33,6 +34,12 @@ class ContactViewModel(
             SortType.LAST_NAME -> repository.getContactByLastName()
             SortType.PHONE_NUMBER -> repository.getContactByPhoneNumber()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+    }
+
+    private var hashMap : HashMap<String , Int> = HashMap<String , Int>()
+
+    init {
+        addImages()
     }
 
     val state = combine(_state, _contacts, _sortType) { state, contacts, sortType ->
@@ -125,5 +132,38 @@ class ContactViewModel(
             }
 
         }
+    }
+
+    fun addImages(){
+        hashMap.put("a", R.drawable.letter_a )
+        hashMap.put("b", R.drawable.letter_a )
+        hashMap.put("c", R.drawable.letter_a )
+        hashMap.put("d", R.drawable.letter_a )
+        hashMap.put("e", R.drawable.letter_a )
+        hashMap.put("f", R.drawable.letter_a )
+        hashMap.put("g", R.drawable.letter_a )
+        hashMap.put("h", R.drawable.letter_a )
+        hashMap.put("i", R.drawable.letter_a )
+        hashMap.put("j", R.drawable.letter_a )
+        hashMap.put("k", R.drawable.letter_a )
+        hashMap.put("l", R.drawable.letter_a )
+        hashMap.put("m", R.drawable.letter_a )
+        hashMap.put("n", R.drawable.letter_a )
+        hashMap.put("o", R.drawable.letter_a )
+        hashMap.put("p", R.drawable.letter_a )
+        hashMap.put("q", R.drawable.letter_a )
+        hashMap.put("r", R.drawable.letter_a )
+        hashMap.put("s", R.drawable.letter_a )
+        hashMap.put("t", R.drawable.letter_a )
+        hashMap.put("u", R.drawable.letter_a )
+        hashMap.put("v", R.drawable.letter_a )
+        hashMap.put("w", R.drawable.letter_a )
+        hashMap.put("x", R.drawable.letter_a )
+        hashMap.put("y", R.drawable.letter_a )
+        hashMap.put("z", R.drawable.letter_a )
+    }
+
+    fun getImageIndex(firstLetter : String): Int? {
+        return hashMap[firstLetter]
     }
 }
