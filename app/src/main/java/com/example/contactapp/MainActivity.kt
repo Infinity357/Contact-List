@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
@@ -41,13 +40,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ContactAppTheme {
-                viewModel.getImageIndex(viewModel.state.collectAsState().value.firstName.first().toString())?.let {
-                    HomeScreen(
-                        state = viewModel.state,
-                        onEvent = {viewModel.onEvent(it)},
-//                        image = it
-                    )
-                }
+                HomeScreen(
+                    state = viewModel.state,
+                    onEvent = {viewModel.onEvent(it)}
+                )
             }
         }
     }
