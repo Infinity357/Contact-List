@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.contactapp.DataBase.Contact
@@ -32,7 +33,7 @@ import com.example.contactapp.R
 import com.example.contactapp.StateAndEvent.ContactEvent
 
 @Composable
-fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->Unit) {
+fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->Unit,getImageIndex: (String) -> Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +49,7 @@ fun ContactItem(contact: Contact, onClick: () -> Unit, onEvent:(ContactEvent)->U
                 modifier = Modifier
                     .clip(shape = CircleShape)
                     .size(56.dp),
-                painter = painterResource(id = R.drawable.three),
+                painter = painterResource(id = getImageIndex(contact.firstName.trimStart().first().toString().lowercase())),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

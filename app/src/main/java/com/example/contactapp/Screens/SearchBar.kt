@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun searchBar(
     state: StateFlow<ContactState>,
     onEvent:(ContactEvent)->Unit,
+    getImageIndex: (String) -> Int
 ){
     val selectedContact = remember { mutableStateOf<Contact?>(null) }
     val contactState = state.collectAsState().value
@@ -92,7 +93,8 @@ fun searchBar(
                        onClick = {
                            selectedContact.value = contact
                        },
-                       onEvent = onEvent
+                       onEvent = onEvent,
+                       getImageIndex = getImageIndex
                    )
                }
             }
