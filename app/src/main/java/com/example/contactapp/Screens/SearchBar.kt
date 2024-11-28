@@ -89,7 +89,7 @@ fun searchBar(
                }
                if(contact.doesMatchSearchQuery(query = contactState.searchQuery)){
                    ContactItem(
-                       contact,
+                       contact = contact,
                        onClick = {
                            selectedContact.value = contact
                        },
