@@ -15,4 +15,6 @@ sealed interface ContactEvent {
     object doneAdding : ContactEvent
     data class onSearchQueryChange(val newQuery : String) : ContactEvent
     data class isSearching(val isSearch : Boolean) : ContactEvent
+    object openSortDropDown : ContactEvent
+    object closeSortDropDown : ContactEvent
 }

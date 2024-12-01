@@ -11,7 +11,6 @@ data class Contact(
     val firstName : String ,
     val lastName : String = "",
     val phoneNumber : String,
-//    val profileImageId : Int = R.drawable.three
 ){
     fun doesMatchSearchQuery(query : String) : Boolean{
         val matchingCombinations = listOf(

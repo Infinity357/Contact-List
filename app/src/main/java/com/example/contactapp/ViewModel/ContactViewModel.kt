@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,13 +30,16 @@ class ContactViewModel(
     private val _sortType = MutableStateFlow(SortType.FIRST_NAME)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val _contacts = _sortType.flatMapConcat { sortType ->
-        when (sortType) {
-            SortType.FIRST_NAME -> repository.getContactByFirstName()
-            SortType.LAST_NAME -> repository.getContactByLastName()
-            SortType.PHONE_NUMBER -> repository.getContactByPhoneNumber()
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    }
+    private val _contacts = _sortType
+        .map { sortType ->
+            when (sortType) {
+                SortType.FIRST_NAME -> repository.getContactByFirstName()
+                SortType.LAST_NAME -> repository.getContactByLastName()
+                SortType.PHONE_NUMBER -> repository.getContactByPhoneNumber()
+            }
+        }
+        .flatMapLatest { it } // Flatten the Flow returned by the repository
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private var hashMap : HashMap<String , Int> = HashMap<String , Int>()
 
@@ -131,6 +136,20 @@ class ContactViewModel(
                 }
             }
 
+            ContactEvent.closeSortDropDown -> {
+                _state.update {
+                    it.copy(
+                        openingSortDropDown = false
+                    )
+                }
+            }
+            ContactEvent.openSortDropDown -> {
+                _state.update {
+                    it.copy(
+                        openingSortDropDown = true
+                    )
+                }
+            }
         }
     }
 

@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import com.example.contactapp.DataBase.Contact
 import com.example.contactapp.StateAndEvent.ContactEvent
 import com.example.contactapp.StateAndEvent.ContactState
@@ -40,16 +42,23 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                actions = {
+                    SortDropDown(
+                        state,
+                        onEvent = onEvent
+                    )
+                },
                 modifier = Modifier
                     .shadow(
                         elevation = 10.dp,
                     ),
-                colors = TopAppBarDefaults.topAppBarColors(Color.Blue),
-                title = { Text(text = "Contacts", modifier = Modifier.padding(horizontal = 20.dp))}
+                colors = TopAppBarDefaults.topAppBarColors(Color(red = 0 , green =160 , blue = 227 , alpha = 255)),
+                title = { Text(text = "Contacts", modifier = Modifier.padding(horizontal = 20.dp),color = Color.White)}
             )
         },
         floatingActionButton = {
             FloatingActionButton(
+                containerColor = Color(red = 0 , green =160 , blue = 227 , alpha = 255),
                 onClick = {
                     onEvent(ContactEvent.nowAdding)
                 }
